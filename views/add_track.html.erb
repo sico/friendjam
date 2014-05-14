@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Add a track!</title>
+		<script data-main="scripts/add-track" src="scripts/require.js"></script>
+	</head>
+	<body>
+		<section class="add-form">
+			<form action="/">
+				<label for="track">Song</label>
+				<input id="track" name="track" type="text" data-bind="value: trackToAdd" placeholder="song name" />
+				<label for="artist">Artist</label>
+				<input type="text" id="artist" name="artist" data-bind="value: artistToAdd" placeholder="artist name" />
+				<button data-bind="click: addSong">Submit</button>
+			</form>
+		</section>
+		<section class="the-queue">
+			<ul data-bind="foreach: songs">
+				<li data-bind="text: title + ', ' + artist"></li>
+			</ul>
+		</section>
+	</body>
+</html>

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rdiographer'
+
+Encoding.default_external = 'utf-8'
+
+Rdiographer.run
