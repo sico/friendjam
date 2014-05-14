@@ -3,6 +3,7 @@ define('models/player',
 function(ko, Track) {
 	var theTrack = ko.observable(new Track({}));
 	var theQueue = ko.observableArray();
+	var playstate = ko.observable();
 
 	// add initial event listeners to stuff
 	R.ready(
@@ -15,6 +16,14 @@ function(ko, Track) {
 					artist: track.get('artist')
 				}));
 			});
+
+			R.player.on("change:playState", function(state) {
+          if (state === R.player.PLAYSTATE_PLAYING || state === R.player.PLAYSTATE_BUFFERING) {
+            playstate('playing');
+          } else {
+            playstate('paused');
+          }
+        });
 
 			// queue change events
 			R.player.queue.on('add', function(model, collection, info) {
@@ -36,7 +45,7 @@ function(ko, Track) {
 
 	// wrapper object for the player. holds reference to track playing.
 	function Player(options) {
-		this.playState = ko.observable();
+		this.playState = playstate;
 		this.theTrack = theTrack;
 		this.theQueue = theQueue;
 	}

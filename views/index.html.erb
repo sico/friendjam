@@ -1,19 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Coolest thing ever</title>
+		<title>Listen to Rdio with Friends</title>
 		<script src="https://www.rdio.com/api/api.js?client_id=ygG5sXnb51r_8p-41_o6Ww"></script>
 		<script data-main="scripts/main" src="scripts/require.js"></script>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
 	</head>
 	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<h1>Listen with friends</h1>
+			</div>
+		</nav>
 		<div class="container">
-			<img data-bind="attr: {src: theTrack().icon, alt: theTrack().title}" src="#" />
-			<p>Now Playing: <span data-bind="text: theTrack().title"></span> by <span data-bind="text: theTrack().artist"></span></p>
-			<div class="controls">
-				<button class="btn btn-primary" data-bind="click: player.back"><<</button>
-				<button class="btn btn-primary" data-bind="click: player.togglePause">Play</button>
-				<button class="btn btn-primary" data-bind="click: player.next">>></button>
+			<div class="row">
+				<div class="col-md-8">
+					<section class="loading" data-bind="visible: isLoading">
+						<h1>Loading...</h1>
+					</section>
+					<section class="auth" data-bind="visible: !isAuthenticated() && !isLoading()">
+						<button class="btn btn-primary" data-bind="click: authenticate">Authenticate!</button>
+					</section>
+					<section class="player" data-bind="visible: isAuthenticated && !isLoading()">
+						<div class="followed-user" data-bind="with: followedUser">
+							<h1>You're listening with <span data-bind="text: model.get('firstName')"></span></h1>
+							<div class="media">
+							  <a class="pull-left" href="#">
+							    <img width="100" data-bind="attr: {src: model.get('icon')}" class="media-object" src="..." >
+							  </a>
+							  <div class="media-body">
+							    <h4 class="media-heading">Now Playing:</h4>
+							    <p><span data-bind="text: trackName"></span> by <span data-bind="text: artist"></span></p>
+							  </div>
+							</div>
+						</div>
+						<img data-bind="attr: {src: theTrack().icon, alt: theTrack().title}" src="#" />
+						<div class="controls">
+							<button class="btn btn-primary" data-bind="click: player.togglePause, text: (player.playState() === 'playing') ? 'Pause' : 'Play'">Play</button>
+						</div>
+					</section>
+				</div>
+				<div class="col-md-4">
+					<section class="following-list" data-bind="visible: !isLoading()">
+						<h1>Choose someone to follow!</h1>
+						<div class="follow-wrap" data-bind="foreach: followingList">
+							<div class="followed" data-bind="click: $parent.chooseFollowing">
+								<img data-bind="attr: {src: model.get('icon')}" width="100" />
+								<p>Now Playing: <span data-bind="text: trackName"></span> by <span data-bind="text: artist"></span></p>
+							</div>
+						</div>
+					</section>
+				</div>
 			</div>
 		</div>
 	</body>
